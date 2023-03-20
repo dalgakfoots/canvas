@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Ch2BaseFile - Template for chap 2 examples</title>
+  </head>
+  <body>
+    <div style="position: absolute; top: 50px; left: 50px">
+      <canvas id="canvas" width="500" height="500"> CANT USE CANVAS </canvas>
+      <br />
+      <button id="clear" onclick="canvasApp(this)">clear</button>
+      <button id="drawScreen" onclick="canvasApp(this)">drawScreen</button>
+      <button id="drawRect1" onclick="canvasApp(this)">drawRect1</button>
+      <button id="drawLine1" onclick="canvasApp(this)">drawLine1</button>
+      <button id="drawLine2" onclick="canvasApp(this)">drawLine2</button>
+      <br />
+      <button id="drawArc1" onclick="canvasApp(this)">drawArc1</button>
+      <button id="drawArc2" onclick="canvasApp(this)">drawArc2</button>
+      <button id="drawBezier1" onclick="canvasApp(this)">drawBezier1</button>
+      <button id="drawBezier2" onclick="canvasApp(this)">drawBezier2</button>
+      <br />
+
+      <button id="drawArea" onclick="canvasApp(this)">drawArea</button>
+      <button id="overlab1" onclick="canvasApp(this)">overlab1</button>
+    </div>
+  </body>
+  <script>
+    window.addEventListener("load", eventWindowLoaded, false);
+
+    function eventWindowLoaded() {
+      canvasApp({ id: "clear" });
+    }
+
+    function canvasApp(button) {
+      function clear() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function drawScreen() {
+        context.fillStyle = "#aaaaaa";
+        context.fillRect(0, 0, 200, 200);
+        context.fillStyle = "#000000";
+        context.font = "20px _sans";
+        context.textBaseline = "top";
+        context.fillText("Canvas", 0, 0);
+      }
+
+      function drawRect1() {
+        context.fillStyle = "#000000";
+        context.strokeStyle = "#ff00ff";
+        context.lineWidth = 2;
+        context.fillRect(10, 10, 40, 40); // 내부가 채워진 사각형
+        context.strokeRect(0, 0, 60, 60); // 사각형 테두리
+        context.clearRect(20, 20, 20, 20); // 투명한 사각형
+      }
+
+      function drawLine1() {
+        context.strokeStyle = "black";
+        context.lineWidth = 10;
+        context.lineCap = "square"; // butt | round | square
+        context.beginPath(); // 서브패스 시작
+        context.moveTo(20, 0); // 20,0 위치에서
+        context.lineTo(100, 0); // 100,0 위치까지
+        context.stroke(); // 그린다.
+        context.closePath(); // 서브패스를 닫는다.
+      }
+
+      function drawLine2() {
+        // round , bevel , 왼쪽 상단에 위치해서 살짝 가려진다.
+        context.strokeStyle = "black";
+        context.lineWidth = 10;
+        context.lineJoin = "bevel"; // miter | bevel | round
+        context.lineCap = "round";
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(25, 0);
+        context.lineTo(25, 25);
+        context.stroke();
+        context.closePath();
+
+        // 왼쪽이나 위에 위치하지 않음
+        context.beginPath();
+        context.moveTo(10, 50);
+        context.lineTo(35, 50);
+        context.lineTo(35, 75);
+        context.stroke();
+        context.closePath();
+
+        // 왼쪽이나 위에 위치하지 않음 + butt / round
+        context.lineJoin = "round"; // miter | bevel | round
+        context.lineCap = "butt";
+        context.beginPath();
+        context.moveTo(10, 100);
+        context.lineTo(35, 100);
+        context.lineTo(35, 125);
+        context.stroke();
+        context.closePath();
+      }
+
+      function drawArc1() {
+        context.beginPath();
+        context.strokeStyle = "black";
+        context.arc(
+          100, // 원의 중심점 x 좌표
+          100, // 원의 중심점 y 좌표
+          20, // 원의 반지름
+          (Math.PI / 180) * 0, // 시작각도 (라디안)
+          (Math.PI / 180) * 360, // 끝각도 (라디안)
+          false // true : 반시계방향 | false : 시계방향
+        );
+        context.stroke();
+        context.closePath();
+      }
+
+      function drawArc2() {
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(100, 200);
+        context.arcTo(
+          // 현재 위치에서 (x1,y1) 위치 까지의 직선과
+          // 현재 위치에서 (x2,y2) 위치 까지의 직선을 동시에 접하고
+          // radius 값의 반지름을 갖는 원호를 그린다.
+          350, // x1
+          350, // y1
+          100, // x2
+          100, // y2
+          20 // 반지름값
+        );
+        context.stroke();
+        context.closePath();
+      }
+
+      function drawBezier1() {
+        context.beginPath();
+        context.moveTo(0, 0); // (0,0) 에서 시작
+        // 2차 베지어 곡선
+        context.quadraticCurveTo(
+          100, // (100,25) 위치에서 구부러진다
+          25,
+          0, // (0,50) 에서 끝난다
+          50
+        );
+        context.stroke();
+        context.closePath();
+      }
+      function drawBezier2() {
+        context.beginPath();
+        context.moveTo(150, 0); // (150,0) 에서 시작
+        // 3차 베지어 곡선
+        context.bezierCurveTo(
+          0, // (제어점1 0, 125)
+          125,
+          300, // (제어점2 300,175)
+          175,
+          150, // (150,300) 에서
+          300
+        );
+        context.stroke();
+        context.closePath();
+      }
+
+      function drawArea() {
+        context.fillStyle = "black";
+        context.fillRect(10, 10, 200, 200);
+        context.save();
+        context.beginPath();
+
+        context.rect(0, 0, 50, 50); // (0,0) 을 시작점으로 가로50 / 세로50 인 사각형 영역을 선택
+        context.clip();
+
+        // 빨간 원 그리기
+        context.beginPath();
+        context.strokeStyle = "red";
+        context.lineWidth = 5;
+        context.arc(
+          100,
+          100,
+          100,
+          (Math.PI / 180) * 0,
+          (Math.PI / 180) * 360,
+          false
+        );
+
+        // 원 그리기
+        context.stroke();
+        context.closePath();
+        context.restore();
+
+        // 전체 캔버스를 영역으로 선택한다.
+        context.beginPath();
+        context.rect(0, 0, 500, 500);
+        context.clip();
+
+        context.beginPath();
+        context.strokeStyle = "blue";
+        context.lineWidth = 5;
+        context.arc(
+          100,
+          100,
+          50,
+          (Math.PI / 180) * 0,
+          (Math.PI / 180) * 360,
+          false
+        );
+
+        context.stroke();
+        context.closePath();
+      }
+
+      function overlab1() {
+        context.fillStyle = "black";
+        context.fillRect(10, 10, 200, 200);
+
+        context.fillStyle = "red";
+        context.fillRect(1, 1, 50, 50);
+
+        // globalCompositeOperation 은
+        // globalAlpha 와 그 밖의 변환을 모두 적용 한 뒤,
+        // 현재의 캔버스 비트맵 이미지 위에 어떻게 그릴지를 설정한다.
+        // default = 'source-over'
+
+        // 윗그림을 밑그림보다 위에 그린다.
+        // 윗그림의 불투명한 부분은 모두 출력한다. 그 위에 밑그림 부분도 출력한다.
+        context.globalCompositeOperation = "source-over";
+        context.fillRect(60, 1, 50, 50);
+
+        // 밑그림을 윗그림보다 위에 그린다.
+        // 밑그림의 불투명한 부분은 모두 출력한다. 그 위에 윗그림 부분도 출력한다.
+        context.globalCompositeOperation = "destination-over";
+        context.fillRect(1, 60, 50, 50);
+
+        // globalAlpha 설정
+        // 캔버스에 도형을 그리기 전에 설정해야 한다.
+        context.globalAlpha = 0.5;
+
+        // 윗그림은 겹친 부분만 출력한다.
+        // 두 그림 모두 불투명하게 겹친 부분은 윗그림을 출력하고
+        // 밑그림이 불투명하고 윗그림이 투명한 부분은 밑그림을 출력한다.
+        // 나머지 부분은 투명하게 처리한다.
+        context.globalCompositeOperation = "source-atop";
+        context.fillRect(60, 60, 50, 50);
+      }
+
+      const canvas = document.querySelector("#canvas");
+      const context = canvas.getContext("2d");
+      eval(button.id + "()");
+    }
+  </script>
+</html>
