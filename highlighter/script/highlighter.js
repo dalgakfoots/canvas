@@ -6,7 +6,7 @@ export default class Highlighter {
     this.loadImageButton = document.querySelector("#loadImageButton");
     this.downloadButton = document.querySelector("#downloadButton");
 
-    this.pointer = new Pointer(this.context);
+    this.pointer = new NewPointer(this.context);
 
     this.initEventListener();
   }
@@ -51,7 +51,7 @@ class Pointer {
 
     this.pos = { x: 0, y: 0 };
     this.context.lineWidth = 26;
-    this.context.lineCap = "butt";
+    this.context.lineCap = "square";
     this.context.strokeStyle = "orange";
 
     this.mousedown = false;
@@ -83,7 +83,7 @@ class Pointer {
 
   setMousedownTrue = () => {
     this.mousedown = true;
-    this.context.globalAlpha = 0.4;
+    this.context.globalAlpha = 0.2;
   };
 
   setMousedownFalse = () => {
@@ -103,5 +103,55 @@ class Pointer {
     this.context.lineTo(this.pos.x, this.pos.y);
 
     this.context.stroke();
+  };
+}
+
+class NewPointer {
+  constructor(context) {
+    this.context = context;
+    this.context.fillStyle = "#ff0";
+    this.context.globalCompositeOperation = "multiply";
+
+    this.mousedown = false;
+    this.start = false;
+    this.pos = { x: 0, y: 0 };
+  }
+
+  setPosition = (e) => {
+    let eventType = e.constructor.name;
+    let type = e.type;
+
+    if (eventType === "TouchEvent") {
+      if (type === "touchstart") {
+        this.setMousedownTrue();
+      } else if (type === "touchend") {
+        this.setMousedownFalse();
+      }
+      this.pos.x = e.changedTouches[0].clientX;
+      this.pos.y = e.changedTouches[0].clientY;
+    } else if (eventType === "MouseEvent") {
+      if (type === "mousedown") {
+        this.setMousedownTrue();
+      } else if (type === "mouseup") {
+        this.setMousedownFalse();
+      }
+      this.pos.x = e.clientX;
+      this.pos.y = e.clientY;
+    }
+  };
+
+  setMousedownTrue = () => {
+    this.mousedown = true;
+  };
+
+  setMousedownFalse = () => {
+    this.mousedown = false;
+  };
+
+  draw = (event) => {
+    this.start = this.mousedown;
+    if (!this.start) return;
+    this.setPosition(event);
+    this.context.fillRect(this.pos.x - 20, this.pos.y - 20, 20, 20);
   };
 }
