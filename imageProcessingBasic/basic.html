@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Ch4BaseFile - Template for chap 4 examples</title>
+  </head>
+  <body>
+    <div style="position: absolute; top: 50px; left: 50px">
+      <canvas id="canvas" width="3000px" height="3000px">
+        You cant use canvas
+      </canvas>
+    </div>
+  </body>
+  <script>
+    window.addEventListener("load", eventWindowLoaded, false);
+
+    const canvas = document.querySelector("#canvas");
+    const context = canvas.getContext("2d");
+
+    const blossom = new Image();
+    blossom.addEventListener("load", eventImageLoaded, false);
+    blossom.src = "./blossom.jpg";
+
+    const windowWidth = 500;
+    const windowHeight = 500;
+
+    const windowX = 0;
+    const windowY = 0;
+
+    function eventImageLoaded() {
+      drawScreen();
+    }
+
+    function eventWindowLoaded() {
+      canvasApp({ id: "clear" });
+    }
+
+    function drawScreen() {
+      context.drawImage(
+        blossom, // Image 인스턴스
+        windowX, // 원본 이미지에서 복사해오려는 부분의 왼쪽 상단 x 위치
+        windowY, // 원본 이미지에서 복사해오려는 부분의 왼쪽 상단 y 위치
+        windowWidth, // 원본 이미지에서 복사해오려는 사각형의 폭
+        windowHeight, // 원본 이미지에서 복사해 오려는 사각형의 높이
+        0, // 캔버스에 이미지를 놓을 위치의 왼쪽 상단 x 좌표
+        0, // 캔버스에 이미지를 놓을 위치의 왼쪽 상단 y 좌표
+
+        // 이미지를 축소하거나 확대하려면 하단의 값을 변경한다.
+        windowWidth, // 캔버스에 복사할 때의 폭을 나타내는 픽셀 수
+        windowHeight // 캔버스에 복사할 때의 높이을 나타내는 픽셀 수
+      );
+    }
+
+    function canvasApp() {}
+  </script>
+</html>
