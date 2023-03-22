@@ -4,6 +4,8 @@ export default class Highlighter {
     this.context = this.canvas.getContext("2d");
     this.clearButton = document.querySelector("#clearButton");
     this.loadImageButton = document.querySelector("#loadImageButton");
+    this.downloadButton = document.querySelector("#downloadButton");
+
     this.pointer = new Pointer(this.context);
 
     this.initEventListener();
@@ -20,6 +22,7 @@ export default class Highlighter {
 
     this.clearButton.addEventListener("click", this.clearCanvas, false);
     this.loadImageButton.addEventListener("click", this.loadImage, false);
+    this.downloadButton.addEventListener("click", this.saveImage, false);
   };
 
   clearCanvas = () => {
@@ -33,6 +36,12 @@ export default class Highlighter {
       this.context.globalAlpha = 1;
       this.context.drawImage(img, 0, 0, 500, 300);
     };
+  };
+
+  saveImage = () => {
+    let download = document.querySelector("#download");
+    let img = this.canvas.toDataURL("image/octet-stream");
+    download.setAttribute("href", img);
   };
 }
 
