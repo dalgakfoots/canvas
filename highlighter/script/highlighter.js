@@ -13,6 +13,11 @@ export default class Highlighter {
     document.addEventListener("mousedown", this.pointer.setPosition);
     document.addEventListener("mouseup", this.pointer.setPosition);
     document.addEventListener("mousemove", this.pointer.draw);
+
+    document.addEventListener("touchstart", this.pointer.setPosition);
+    document.addEventListener("touchend", this.pointer.setPosition);
+    document.addEventListener("touchmove", this.pointer.draw);
+
     this.clearButton.addEventListener("click", this.clearCanvas, false);
     this.loadImageButton.addEventListener("click", this.loadImage, false);
   };
@@ -44,16 +49,37 @@ class Pointer {
     this.start = false;
   }
 
-  setPosition = (mouseEvent) => {
-    if (mouseEvent.type === "mousedown") {
-      this.mousedown = true;
-      this.context.globalAlpha = 0.4;
-    } else if (mouseEvent.type === "mouseup") {
-      this.mousedown = false;
-      this.context.globalAlpha = 1;
+  setPosition = (e) => {
+    let eventType = e.constructor.name;
+    let type = e.type;
+
+    if (eventType === "TouchEvent") {
+      if (type === "touchstart") {
+        this.setMousedownTrue();
+      } else if (type === "touchend") {
+        this.setMousedownFalse();
+      }
+      this.pos.x = e.changedTouches[0].clientX;
+      this.pos.y = e.changedTouches[0].clientY;
+    } else if (eventType === "MouseEvent") {
+      if (type === "mousedown") {
+        this.setMousedownTrue();
+      } else if (type === "mouseup") {
+        this.setMousedownFalse();
+      }
+      this.pos.x = e.clientX;
+      this.pos.y = e.clientY;
     }
-    this.pos.x = mouseEvent.clientX;
-    this.pos.y = mouseEvent.clientY;
+  };
+
+  setMousedownTrue = () => {
+    this.mousedown = true;
+    this.context.globalAlpha = 0.4;
+  };
+
+  setMousedownFalse = () => {
+    this.mousedown = false;
+    this.context.globalAlpha = 1;
   };
 
   draw = (mouseEvent) => {
