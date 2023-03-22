@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Ch4BaseFile - Template for chap 4 examples</title>
+  </head>
+  <body>
+    <canvas
+      id="canvas1"
+      width="256"
+      height="256"
+      style="position: absolute; top: 50px; left: 50px"
+    >
+      ERROR
+    </canvas>
+    <canvas
+      id="canvas2"
+      width="256"
+      height="256"
+      style="position: absolute; top: 256px; left: 50px"
+    >
+    </canvas>
+  </body>
+  <script>
+    const canvas1 = document.querySelector("#canvas1");
+    const context1 = canvas1.getContext("2d");
+    const canvas2 = document.querySelector("#canvas2");
+    const context2 = canvas2.getContext("2d");
+
+    window.addEventListener("load", eventWindowLoaded, false);
+
+    function eventWindowLoaded() {
+      canvasApp();
+    }
+
+    function canvasApp() {
+      function blossomLoaded() {
+        startUp();
+      }
+
+      function startUp() {
+        context1.drawImage(blossom, 0, 0);
+        context2.drawImage(canvas1, 32, 0, 32, 32, 0, 0, 32, 32);
+      }
+      let blossom = new Image();
+      blossom.src = "./blossom.jpg";
+      blossom.addEventListener("load", blossomLoaded, false);
+    }
+  </script>
+</html>
