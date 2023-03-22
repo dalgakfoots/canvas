@@ -31,10 +31,10 @@ export default class Highlighter {
 
   loadImage = () => {
     const img = new Image();
-    img.src = "./blossom.jpg";
+    img.src = "./loremipsum.png";
     img.onload = () => {
       this.context.globalAlpha = 1;
-      this.context.drawImage(img, 0, 0, 500, 300);
+      this.context.drawImage(img, 0, 0, 500, 600);
     };
   };
 
