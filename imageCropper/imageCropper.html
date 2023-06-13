@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <!-- html body 부분 -->
+    <div style="padding-bottom: 15px; width: 98%">
+      <br />
+      <canvas
+        id="drawCanvas"
+        width="800"
+        height="600"
+        style="position: relative; border: 1px solid #000"
+      >
+        You can't use canvas
+      </canvas>
+
+      <!--crop 용 canvas-->
+
+      <br />
+      <button id="clearButton">clearImage</button>
+      <button id="loadImageButton">loadImage</button>
+      <button id="undo">undo</button>
+      <button id="crop">crop</button>
+      <a id="download" download="download.png">
+        <button id="downloadButton" type="button">download</button>
+      </a>
+    </div>
+    <div>
+      <canvas 
+        id="cropCanvas"
+        style="border: 1px solid #000"
+        >
+        You can't use canvas
+      </canvas>
+    </div>
+  </body>
+  <script type="module">
+    // import ImageLoader from './script/imageLoader.js';
+    import ImageCropper from "./script/imageCropper.js";
+    const imageCropper = new ImageCropper();
+    // const imageLoader = new ImageLoader();
+  </script>
+</html>
